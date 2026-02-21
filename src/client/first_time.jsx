@@ -1,11 +1,34 @@
-import { address } from "framer-motion/client";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const getInitialClinicName = () => {
+    const pendingName = sessionStorage.getItem("clinic_signup_name");
+    if (pendingName) return pendingName;
+
+    try {
+        const authUser = JSON.parse(sessionStorage.getItem("auth_user") || "{}");
+        return authUser?.name || "";
+    } catch {
+        return "";
+    }
+};
+
+const getInitialClinicEmail = () => {
+    const pendingEmail = sessionStorage.getItem("clinic_signup_email");
+    if (pendingEmail) return pendingEmail;
+
+    try {
+        const authUser = JSON.parse(sessionStorage.getItem("auth_user") || "{}");
+        return authUser?.email || "";
+    } catch {
+        return "";
+    }
+};
+
 export default function FirstTimeClient() {
     const navigate = useNavigate();
-    const [clinicName, setClinicName] = useState("");
-    const [contactEmail, setContactEmail] = useState("");
+    const [clinicName, setClinicName] = useState(getInitialClinicName);
+    const [contactEmail, setContactEmail] = useState(getInitialClinicEmail);
     const [address, setAddress] = useState("");
     const [phone, setPhone] = useState("");
 
@@ -15,6 +38,8 @@ export default function FirstTimeClient() {
             "clinic_profile",
             JSON.stringify({ clinicName, contactEmail, address, phone }),
         );
+        sessionStorage.removeItem("clinic_signup_name");
+        sessionStorage.removeItem("clinic_signup_email");
         navigate("/clinic/dashboard");
     };
 

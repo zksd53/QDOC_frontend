@@ -39,6 +39,8 @@ export default function ClinicSignup() {
             sessionStorage.setItem("auth_user", JSON.stringify(user));
             if (token) sessionStorage.setItem("auth_token", token);
             sessionStorage.setItem("allow_clinic_first_time", "true");
+            sessionStorage.setItem("clinic_signup_name", name.trim());
+            sessionStorage.setItem("clinic_signup_email", email.trim());
 
             navigate("/clinic-first-time", { replace: true });
         } catch (err) {

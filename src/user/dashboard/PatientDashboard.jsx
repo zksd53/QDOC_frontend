@@ -6,6 +6,29 @@ import VaccinationTab from './VaccinationTab';
 import ReminderTab from './ReminderTab';
 import '../App.css';
 
+const CLINIC_PATIENTS_KEY = 'clinic_patient_profiles';
+
+function upsertClinicPatientProfile(profile) {
+    try {
+        const existing = JSON.parse(localStorage.getItem(CLINIC_PATIENTS_KEY) || '[]');
+        const safeExisting = Array.isArray(existing) ? existing : [];
+        const matchIndex = safeExisting.findIndex((item) =>
+            (profile.userId && item.userId === profile.userId) ||
+            (profile.email && item.email === profile.email)
+        );
+
+        if (matchIndex >= 0) {
+            safeExisting[matchIndex] = { ...safeExisting[matchIndex], ...profile };
+        } else {
+            safeExisting.push(profile);
+        }
+
+        localStorage.setItem(CLINIC_PATIENTS_KEY, JSON.stringify(safeExisting));
+    } catch {
+        // Ignore storage failures.
+    }
+}
+
 function PatientDashboard() {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = React.useState('home');
@@ -54,6 +77,23 @@ function PatientDashboard() {
     const handleProfileUpdate = (nextProfile) => {
         setPatientProfile(nextProfile);
         sessionStorage.setItem('patient_profile', JSON.stringify(nextProfile));
+
+        const fullName =
+            nextProfile?.name ||
+            [nextProfile?.firstName, nextProfile?.lastName].filter(Boolean).join(' ').trim() ||
+            '';
+        upsertClinicPatientProfile({
+            userId: authUser?.id || '',
+            email: authUser?.email || '',
+            name: fullName || authUser?.name || '',
+            firstName: nextProfile?.firstName || authUser?.first_name || '',
+            lastName: nextProfile?.lastName || authUser?.last_name || '',
+            dob: nextProfile?.dob || '',
+            conditions: Array.isArray(nextProfile?.conditions) ? nextProfile.conditions : [],
+            vaccinations: Array.isArray(nextProfile?.vaccinations) ? nextProfile.vaccinations : [],
+            pregnancyStatus: Boolean(nextProfile?.pregnancyStatus),
+            immunocompromisedStatus: Boolean(nextProfile?.immunocompromisedStatus)
+        });
     };
 
     const handleReminderUpdate = (nextReminder) => {

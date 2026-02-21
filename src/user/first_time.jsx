@@ -2,6 +2,29 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { updateUserProfile } from "../services/auth";
 
+const CLINIC_PATIENTS_KEY = "clinic_patient_profiles";
+
+const upsertClinicPatientProfile = (profile) => {
+  try {
+    const existing = JSON.parse(localStorage.getItem(CLINIC_PATIENTS_KEY) || "[]");
+    const safeExisting = Array.isArray(existing) ? existing : [];
+    const matchIndex = safeExisting.findIndex((item) =>
+      (profile.userId && item.userId === profile.userId) ||
+      (profile.email && item.email === profile.email)
+    );
+
+    if (matchIndex >= 0) {
+      safeExisting[matchIndex] = { ...safeExisting[matchIndex], ...profile };
+    } else {
+      safeExisting.push(profile);
+    }
+
+    localStorage.setItem(CLINIC_PATIENTS_KEY, JSON.stringify(safeExisting));
+  } catch {
+    // Ignore storage failures.
+  }
+};
+
 const parseCsvLine = (line) => {
   const values = [];
   let current = "";
@@ -193,6 +216,28 @@ export default function FirstTimeUser() {
         vaccinations
       })
     );
+    try {
+      const authUser = JSON.parse(sessionStorage.getItem("auth_user") || "{}");
+      upsertClinicPatientProfile({
+        userId: authUser?.id || "",
+        email: authUser?.email || "",
+        name: fullName,
+        firstName: normalizedFirstName,
+        lastName: normalizedLastName,
+        dob,
+        conditions,
+        vaccinations
+      });
+    } catch {
+      upsertClinicPatientProfile({
+        name: fullName,
+        firstName: normalizedFirstName,
+        lastName: normalizedLastName,
+        dob,
+        conditions,
+        vaccinations
+      });
+    }
     sessionStorage.removeItem("patient_signup_name");
     navigate("/user/dashboard");
   };

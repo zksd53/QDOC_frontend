@@ -1,4 +1,4 @@
-const VACCINE_CATALOG = [
+export const VACCINE_CATALOG = [
     { key: 'rsv', name: 'Respiratory Syncytial Virus (RSV)', intervalDays: 3650, minAge: 0, maxAge: 1 },
     { key: 'dtap-ipv-hib', name: 'DTaP-IPV-Hib', intervalDays: 3650, minAge: 0 },
     { key: 'pneu-c-15', name: 'Pneumococcal Conjugate 15 valent (Pneu-C-15)', intervalDays: 3650, minAge: 0 },

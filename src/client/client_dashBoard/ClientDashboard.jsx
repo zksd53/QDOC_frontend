@@ -1,6 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { buildVaccineInsights, calculateAge, formatDate, VACCINE_CATALOG } from '../../user/dashboard/patientUtils';
 import './ClientDashboard.css';
+
+const CLINIC_PATIENTS_KEY = 'clinic_patient_profiles';
 
 const defaultPatients = [
     {
@@ -66,13 +69,105 @@ function calcOverview(patients) {
     };
 }
 
+function buildRuleText(vaccine) {
+    const ageText = vaccine.maxAge != null
+        ? `Age ${vaccine.minAge ?? 0}-${vaccine.maxAge}`
+        : `Age ${vaccine.minAge ?? 0}+`;
+    const cadenceText = vaccine.intervalDays >= 3650
+        ? 'booster interval: 10 years'
+        : `booster interval: ${vaccine.intervalDays} day(s)`;
+
+    return `${ageText}, ${cadenceText}.`;
+}
+
+function getRiskStatus(profile) {
+    const conditionsCount = Array.isArray(profile?.conditions) ? profile.conditions.length : 0;
+    if (profile?.immunocompromisedStatus || conditionsCount >= 2) return 'High';
+    if (profile?.pregnancyStatus || conditionsCount === 1) return 'Medium';
+    return 'Low';
+}
+
+function getRiskFactors(profile) {
+    const factors = [];
+    if (Array.isArray(profile?.conditions) && profile.conditions.length) factors.push('Chronic conditions');
+    if (profile?.pregnancyStatus) factors.push('Pregnancy');
+    if (profile?.immunocompromisedStatus) factors.push('Immunocompromised');
+    return factors.length ? factors.join(', ') : 'None';
+}
+
+function mapProfileToClinicPatient(profile, index) {
+    const insights = buildVaccineInsights(profile, 14);
+    const prioritized =
+        insights.timeline.find((item) => item.status === 'overdue') ||
+        insights.timeline.find((item) => item.status === 'due_soon') ||
+        insights.timeline.find((item) => item.status === 'completed') ||
+        null;
+
+    const name =
+        profile?.name ||
+        [profile?.firstName, profile?.lastName].filter(Boolean).join(' ').trim() ||
+        profile?.email ||
+        `Patient ${index + 1}`;
+
+    const timeline = (profile?.vaccinations || [])
+        .map((item) => item?.vaccineName)
+        .filter(Boolean);
+
+    return {
+        id: profile?.userId || profile?.email || `LP-${index + 1}`,
+        name,
+        age: calculateAge(profile?.dob) ?? '-',
+        riskStatus: getRiskStatus(profile),
+        dueVaccine: prioritized?.vaccineName || '-',
+        currentStatus:
+            prioritized?.status === 'overdue'
+                ? 'Overdue'
+                : prioritized?.status === 'due_soon'
+                    ? 'Due This Week'
+                    : 'Completed',
+        lastDoseDate: formatDate(prioritized?.lastDate),
+        timeline,
+        eligibility: prioritized?.reason || 'No schedule data available',
+        riskFactors: getRiskFactors(profile)
+    };
+}
+
+function loadUploadedPatients() {
+    try {
+        const raw = JSON.parse(localStorage.getItem(CLINIC_PATIENTS_KEY) || '[]');
+        const profiles = Array.isArray(raw) ? raw : [];
+        return profiles
+            .filter((profile) => Array.isArray(profile?.vaccinations) && profile.vaccinations.length > 0)
+            .map(mapProfileToClinicPatient);
+    } catch {
+        return [];
+    }
+}
+
 function ClientDashboard() {
     const navigate = useNavigate();
-    const [patients] = React.useState(defaultPatients);
+    const [patients] = React.useState(() => {
+        const uploadedPatients = loadUploadedPatients();
+        return uploadedPatients.length > 0 ? uploadedPatients : defaultPatients;
+    });
     const [activeTab, setActiveTab] = React.useState('patients');
     const [selectedPatientId, setSelectedPatientId] = React.useState('');
     const [autoReminder, setAutoReminder] = React.useState(true);
     const [scheduleWindow, setScheduleWindow] = React.useState('09:00');
+
+    const clinicName = React.useMemo(() => {
+        try {
+            const profile = JSON.parse(sessionStorage.getItem('clinic_profile') || '{}');
+            if (profile?.clinicName) return profile.clinicName;
+
+            const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}');
+            if (authUser?.name) return authUser.name;
+        } catch {
+            // ignore parse errors
+        }
+
+        return sessionStorage.getItem('clinic_signup_name') || 'Clinic Dashboard';
+    }, []);
 
     const summary = calcOverview(patients);
     const selectedPatient = patients.find((p) => p.id === selectedPatientId) || null;
@@ -95,7 +190,7 @@ function ClientDashboard() {
     return (
         <div className="client-dashboard-page">
             <div className="clinic-topbar">
-                <span className="clinic-name">Astro Clinic</span>
+                <span className="clinic-name">{clinicName}</span>
                 <div className="clinic-topbar-actions">
                     <button type="button" className="clinic-topbar-btn" onClick={handleHelp}>Help</button>
                     <button type="button" className="clinic-topbar-btn clinic-topbar-btn-logout" onClick={handleLogout}>Logout</button>
@@ -254,11 +349,11 @@ function ClientDashboard() {
                                     </button>
                                 </div>
                                 <ul className="rule-list">
-                                    <li>Pediatric booster: Trigger at age 4-6 with 5-year spacing.</li>
-                                    <li>Influenza: Annual recommendation for all active patients.</li>
-                                    <li>High-risk Hepatitis B: Auto-flag chronic and immunocompromised profiles.</li>
-                                    <li>Tdap: Adult booster every 10 years with overdue alert after due date.</li>
-                                    <li>Pneumococcal: Age 65+ auto-eligibility and reminder generation.</li>
+                                    {VACCINE_CATALOG.map((vaccine) => (
+                                        <li key={vaccine.key}>
+                                            {vaccine.name}: {buildRuleText(vaccine)}
+                                        </li>
+                                    ))}
                                 </ul>
                             </section>
                         )}
