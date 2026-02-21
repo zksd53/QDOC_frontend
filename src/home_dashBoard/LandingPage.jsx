@@ -64,7 +64,7 @@ export default function LandingPage() {
                 </button>
                 <div className="brand-wrap">
                     <span className="brand-mark">✶</span>
-                    <span className="brand-name">VaxSheild</span>
+                    <span className="brand-name">VaxShield</span>
                 </div>
                 <button
                     type="button"
