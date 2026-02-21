@@ -110,6 +110,8 @@
     line-height: 1;
     min-width: 220px;
     text-align: center;
+    border: 0;
+    cursor: pointer;
 }
 
 .entry-tabs {

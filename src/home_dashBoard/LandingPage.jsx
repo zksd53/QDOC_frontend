@@ -66,9 +66,13 @@ export default function LandingPage() {
                     <span className="brand-mark">✶</span>
                     <span className="brand-name">VaxSheild</span>
                 </div>
-                <Link to="/dashboard" className="get-started-btn">
+                <button
+                    type="button"
+                    className="get-started-btn"
+                    onClick={() => scrollToSection('patients')}
+                >
                     Get Started
-                </Link>
+                </button>
             </header>
 
             <div className="entry-tabs" role="tablist" aria-label="User type tabs">
