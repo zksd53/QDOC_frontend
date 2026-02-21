@@ -173,8 +173,8 @@ export default function FirstTimeUser() {
       (item) => item.vaccineName.trim() && item.dateTaken
     );
 
-    if (!firstName.trim() || !lastName.trim() || !dob || !hasValidVaccination) {
-      setSubmitError("Please fill first name, last name, DOB, and at least one vaccination with a date.");
+    if (!firstName.trim() || !dob || !hasValidVaccination) {
+      setSubmitError("Please fill first name, DOB, and at least one vaccination with a date.");
       return;
     }
 
@@ -251,6 +251,7 @@ export default function FirstTimeUser() {
     if (!file) return;
 
     setCsvError("");
+    setSubmitError("");
 
     try {
       const text = await file.text();
@@ -335,7 +336,10 @@ export default function FirstTimeUser() {
             id="patient-first-name"
             name="firstName"
             value={firstName}
-            onChange={(e) => setFirstName(e.target.value.replace(/[^a-zA-Z]/g, ""))}
+            onChange={(e) => {
+              setFirstName(e.target.value.replace(/[^a-zA-Z]/g, ""));
+              setSubmitError("");
+            }}
           />
 
           <label htmlFor="patient-last-name">Last Name:</label>
@@ -344,7 +348,10 @@ export default function FirstTimeUser() {
             id="patient-last-name"
             name="lastName"
             value={lastName}
-            onChange={(e) => setLastName(e.target.value.replace(/[^a-zA-Z]/g, ""))}
+            onChange={(e) => {
+              setLastName(e.target.value.replace(/[^a-zA-Z]/g, ""));
+              setSubmitError("");
+            }}
           />
 
           <label htmlFor="patient-dob">DOB:</label>
@@ -353,7 +360,10 @@ export default function FirstTimeUser() {
             id="patient-dob"
             name="dob"
             value={dob}
-            onChange={(e) => setDob(e.target.value)}
+            onChange={(e) => {
+              setDob(e.target.value);
+              setSubmitError("");
+            }}
           />
 
           <label htmlFor="patient-condition-input">Chronic Conditions:</label>
@@ -363,7 +373,10 @@ export default function FirstTimeUser() {
                 type="text"
                 id="patient-condition-input"
                 value={conditionInput}
-                onChange={(e) => setConditionInput(e.target.value)}
+                onChange={(e) => {
+                  setConditionInput(e.target.value);
+                  setSubmitError("");
+                }}
                 placeholder="Type condition and click Add"
               />
               <button type="button" className="small-btn" onClick={addCondition}>
@@ -395,14 +408,20 @@ export default function FirstTimeUser() {
                   placeholder="Vaccine name"
                   value={vaccine.vaccineName}
                   onChange={(e) =>
-                    updateVaccination(index, "vaccineName", e.target.value)
+                    {
+                      updateVaccination(index, "vaccineName", e.target.value);
+                      setSubmitError("");
+                    }
                   }
                 />
                 <input
                   type="date"
                   value={vaccine.dateTaken}
                   onChange={(e) =>
-                    updateVaccination(index, "dateTaken", e.target.value)
+                    {
+                      updateVaccination(index, "dateTaken", e.target.value);
+                      setSubmitError("");
+                    }
                   }
                 />
                 <button
