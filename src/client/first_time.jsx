@@ -24,7 +24,7 @@ export default function FirstTimeClient() {
                 <h1>Clinic First-Time Setup</h1>
 
                 <div className="form-grid">
-                    <label htmlFor="client-name">Clinic name:</label>
+                    <label htmlFor="client-name">Clinic Name:</label>
                     <input
                         type="text"
                         id="client-name"
@@ -42,7 +42,7 @@ export default function FirstTimeClient() {
                         onChange={(e) => setContactEmail(e.target.value)}
                     />
 
-                    <label htmlFor="client-phone">Contact number:</label>
+                    <label htmlFor="client-phone">Contact Number:</label>
                     <input
                         type="number"
                         id="client-phone"
@@ -61,7 +61,7 @@ export default function FirstTimeClient() {
                     />
 
                     <div className="form-actions">
-                        <button type="submit">Save Profile</button>
+                        <button type="submit">Save Clinic</button>
                     </div>
                 </div>
             </form>
