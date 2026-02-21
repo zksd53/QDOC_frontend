@@ -45,7 +45,7 @@ export default function LandingPage() {
     if (showIntro) {
         return (
             <div className="intro-screen">
-                <BlurText text="Welcome to VaxSheild" className="intro-text" delay={150} />
+                <BlurText text="Welcome to VaxShield" className="intro-text" delay={150} />
             </div>
         );
     }
