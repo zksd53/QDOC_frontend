@@ -2,9 +2,62 @@
     box-sizing: border-box;
 }
 
-.dashboard-container {
+.dashboard-container,
+.patient-page {
     min-height: 100vh;
     background-color: #f9fafb;
+}
+
+.patient-topbar {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-bottom: none;
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.patient-topbar-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.patient-topbar-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.patient-topbar-btn {
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #0f172a;
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.patient-topbar-btn-logout {
+    background: #111827;
+    border-color: #111827;
+    color: #ffffff;
+}
+
+.patient-shell {
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    min-height: 100vh;
+    padding: 20px;
+    display: grid;
+    gap: 14px;
+    align-content: start;
+}
+
+.patient-header {
+    padding: 0;
 }
 
 .dashboard-header {
@@ -34,7 +87,54 @@
     font-size: 24px;
     font-weight: 700;
     color: #111827;
-    padding: 16px 0;
+    padding: 0;
+    margin: 0;
+}
+
+.patient-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 14px;
+}
+
+.patient-sidebar {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 14px;
+    height: fit-content;
+}
+
+.patient-sidebar h2 {
+    margin: 0 0 10px;
+    font-size: 20px;
+}
+
+.patient-side-tabs {
+    display: grid;
+    gap: 8px;
+}
+
+.patient-side-tab {
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #0f172a;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+}
+
+.patient-side-tab-active {
+    background: #eff6ff;
+    border-color: #93c5fd;
+    color: #1d4ed8;
+}
+
+.patient-main {
+    display: grid;
+    gap: 12px;
 }
 
 .tab-navigation {
@@ -145,6 +245,13 @@
 .timeline-list {
     display: grid;
     gap: 12px;
+}
+
+.filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
 }
 
 .timeline-item {
@@ -441,6 +548,15 @@
 }
 
 @media (max-width: 900px) {
+    .patient-topbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .patient-layout {
+        grid-template-columns: 1fr;
+    }
+
     .profile-grid,
     .profile-grid-2,
     .toggle-row,

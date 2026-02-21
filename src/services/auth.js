@@ -6,7 +6,12 @@ const parseBody = async (response) => {
         return response.json();
     }
     const text = await response.text();
-    return { message: text };
+    if (!text) return {};
+    try {
+        return JSON.parse(text);
+    } catch {
+        return { message: text };
+    }
 };
 
 const parseError = async (response) => {
@@ -25,6 +30,20 @@ export const signupUser = async ({ name, email, password, role }) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password, role })
+    });
+
+    if (!response.ok) {
+        throw new Error(await parseError(response));
+    }
+
+    return parseBody(response);
+};
+
+export const loginUser = async ({ email, password, role }) => {
+    const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, role })
     });
 
     if (!response.ok) {

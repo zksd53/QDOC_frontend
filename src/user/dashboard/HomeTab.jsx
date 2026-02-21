@@ -4,6 +4,7 @@ import { buildVaccineInsights, formatDate } from './patientUtils';
 function HomeTab({ patientProfile, reminderSettings }) {
     const windowDays = reminderSettings?.windowDays || 14;
     const insights = buildVaccineInsights(patientProfile, windowDays);
+    const actionItems = insights.timeline.filter((item) => item.status === 'due_soon' || item.status === 'overdue').slice(0, 6);
 
     return (
         <div className="dash-stack">
@@ -28,11 +29,24 @@ function HomeTab({ patientProfile, reminderSettings }) {
             </section>
 
             <section className="dash-panel">
-                <h2 className="dash-heading">Overview</h2>
-                <p className="dash-subtext">
-                    Keep your profile and vaccination records updated to improve eligibility accuracy and reminders.
-                </p>
+                <h2 className="dash-heading">What You Should Do Next</h2>
+                {actionItems.length === 0 ? (
+                    <p className="dash-subtext">No immediate vaccines due. Keep tracking your schedule.</p>
+                ) : (
+                    <div className="action-list">
+                        {actionItems.map((item) => (
+                            <article key={item.key} className="action-item">
+                                <div>
+                                    <p className="action-title">{item.vaccineName}</p>
+                                    <p className="dash-muted-small">{item.reason}</p>
+                                </div>
+                                <span className={`status-pill status-${item.status}`}>{item.status.replace('_', ' ')}</span>
+                            </article>
+                        ))}
+                    </div>
+                )}
             </section>
+
         </div>
     );
 }
