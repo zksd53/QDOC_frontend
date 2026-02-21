@@ -1,19 +1,19 @@
+import { address } from "framer-motion/client";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function FirstTimeClient() {
     const navigate = useNavigate();
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [dob, setDob] = useState("");
-    const [chronicConditions, setChronicConditions] = useState("");
-    const [vaccinationHistory, setVaccinationHistory] = useState("");
+    const [clinicName, setClinicName] = useState("");
+    const [contactEmail, setContactEmail] = useState("");
+    const [address, setAddress] = useState("");
+    const [phone, setPhone] = useState("");
 
     const handleSubmit = (e) => {
         e.preventDefault();
         sessionStorage.setItem(
             "clinic_profile",
-            JSON.stringify({ firstName, lastName, dob, chronicConditions, vaccinationHistory }),
+            JSON.stringify({ clinicName, contactEmail, address, phone }),
         );
         navigate("/clinic/dashboard");
     };
@@ -24,51 +24,40 @@ export default function FirstTimeClient() {
                 <h1>Clinic First-Time Setup</h1>
 
                 <div className="form-grid">
-                    <label htmlFor="client-first-name">First name:</label>
+                    <label htmlFor="client-name">Clinic name:</label>
                     <input
                         type="text"
-                        id="client-first-name"
-                        name="firstName"
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
+                        id="client-name"
+                        placeholder="Vaccine Hut"
+                        value={clinicName}
+                        onChange={(e) => setClinicName(e.target.value)}
                     />
 
-                    <label htmlFor="client-last-name">Last name:</label>
+                    <label htmlFor="client-email">Contact Email:</label>
                     <input
                         type="text"
-                        id="client-last-name"
-                        name="lastName"
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
+                        id="client-email"
+                        placeholder="vaccinehut@clinics.ca"
+                        value={contactEmail}
+                        onChange={(e) => setContactEmail(e.target.value)}
                     />
 
-                    <label htmlFor="client-dob">DOB:</label>
+                    <label htmlFor="client-phone">Contact number:</label>
                     <input
-                        type="date"
-                        id="client-dob"
-                        name="dob"
-                        value={dob}
-                        onChange={(e) => setDob(e.target.value)}
+                        type="number"
+                        id="client-phone"
+                        placeholder="1231231234"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
                     />
 
-                    <label htmlFor="client-chronic-conditions">Chronic conditions:</label>
-                    <textarea
-                        id="client-chronic-conditions"
-                        name="chronicConditions"
-                        rows="4"
-                        placeholder="List any ongoing health conditions"
-                        value={chronicConditions}
-                        onChange={(e) => setChronicConditions(e.target.value)}
-                    />
-
-                    <label htmlFor="client-vaccination-history">Vaccination history:</label>
-                    <textarea
-                        id="client-vaccination-history"
-                        name="vaccinationHistory"
-                        rows="4"
-                        placeholder="Enter recent vaccines or dates"
-                        value={vaccinationHistory}
-                        onChange={(e) => setVaccinationHistory(e.target.value)}
+                    <label htmlFor="client-address">Address:</label>
+                    <input
+                        type="text"
+                        id="client-address"
+                        placeholder="123 Fun Street, Winnipeg, MB, A1A 1A1"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
                     />
 
                     <div className="form-actions">
