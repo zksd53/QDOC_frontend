@@ -21,9 +21,10 @@ export default function PatientSignup() {
         setError("");
 
         try {
-            const result = await signupUser({ name, email, password, role: "patient" });
-            const user = result?.user || result?.data?.user || { name, email, role: "patient" };
-            const token = result?.token || result?.accessToken || result?.jwt || result?.data?.token || "";
+            const result = await signupUser({ name, email, password });
+            const user = result?.user || result?.data?.user || { name, email };
+            const token =
+                result?.token || result?.accessToken || result?.jwt || result?.data?.token || "";
 
             sessionStorage.setItem("auth_user", JSON.stringify(user));
             if (token) sessionStorage.setItem("auth_token", token);
@@ -74,7 +75,11 @@ export default function PatientSignup() {
                         onChange={(e) => setPassword(e.target.value)}
                     />
 
-                    <button type="submit" className="login-btn" disabled={!isFormValid || isSubmitting}>
+                    <button
+                        type="submit"
+                        className="login-btn"
+                        disabled={!isFormValid || isSubmitting}
+                    >
                         {isSubmitting ? "Creating..." : "Continue"}
                     </button>
                 </form>
