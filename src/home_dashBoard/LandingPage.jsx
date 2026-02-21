@@ -63,7 +63,11 @@ export default function LandingPage() {
                     <span />
                 </button>
                 <div className="brand-wrap">
-                    <span className="brand-mark">✶</span>
+                    <img
+                        className="brand-logo"
+                        src={`${process.env.PUBLIC_URL}/web-icon.png`}
+                        alt="VaxShield Logo"
+                    />
                     <span className="brand-name">VaxShield</span>
                 </div>
                 <button

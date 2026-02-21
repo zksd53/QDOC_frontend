@@ -90,9 +90,8 @@
     color: #0f172a;
 }
 
-.brand-mark {
-    font-size: 38px;
-    line-height: 1;
+.brand-logo {
+    height: 50px;
 }
 
 .brand-name {
@@ -110,7 +109,7 @@
     border-radius: 18px;
     padding: 18px 32px;
     line-height: 1;
-    min-width: 220px;
+    min-width: 200px;
     text-align: center;
     border: 0;
     cursor: pointer;
