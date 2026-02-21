@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
-import BlurText from './BlurText';
-import ScrollReveal from './ScrollReveal';
-import './LandingPage.css';
+import { Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import BlurText from "./BlurText";
+import ScrollReveal from "./ScrollReveal";
+import "./LandingPage.css";
 
 export default function LandingPage() {
     const [showIntro, setShowIntro] = useState(true);
@@ -14,7 +14,7 @@ export default function LandingPage() {
     const scrollToSection = (id) => {
         const el = document.getElementById(id);
         if (el) {
-            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            el.scrollIntoView({ behavior: "smooth", block: "start" });
         }
     };
 
@@ -33,7 +33,7 @@ export default function LandingPage() {
                     if (entry.target === clinicRef.current) setClinicVisible(true);
                 });
             },
-            { threshold: 0.25 }
+            { threshold: 0.25 },
         );
 
         if (patientRef.current) observer.observe(patientRef.current);
@@ -55,8 +55,8 @@ export default function LandingPage() {
             <header className="top-shell">
                 <button
                     type="button"
-                    className={`menu-button ${menuOpen ? 'menu-button-open' : ''}`}
-                    aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+                    className={`menu-button ${menuOpen ? "menu-button-open" : ""}`}
+                    aria-label={menuOpen ? "Close menu" : "Open menu"}
                     onClick={() => setMenuOpen((v) => !v)}
                 >
                     <span />
@@ -69,17 +69,25 @@ export default function LandingPage() {
                 <button
                     type="button"
                     className="get-started-btn"
-                    onClick={() => scrollToSection('patients')}
+                    onClick={() => scrollToSection("patients")}
                 >
                     Get Started
                 </button>
             </header>
 
             <div className="entry-tabs" role="tablist" aria-label="User type tabs">
-                <button type="button" className="entry-tab" onClick={() => scrollToSection('patients')}>
+                <button
+                    type="button"
+                    className="entry-tab"
+                    onClick={() => scrollToSection("patients")}
+                >
                     Patient
                 </button>
-                <button type="button" className="entry-tab" onClick={() => scrollToSection('clinics')}>
+                <button
+                    type="button"
+                    className="entry-tab"
+                    onClick={() => scrollToSection("clinics")}
+                >
                     Clinic
                 </button>
             </div>
@@ -89,8 +97,13 @@ export default function LandingPage() {
                     <article className="nav-card nav-card-patient">
                         <h3>Patient</h3>
                         <div className="nav-links">
-                            <Link to="/patient-signup" onClick={() => setMenuOpen(false)}> signin </Link>
-                            <Link to="/patient-login" onClick={() => setMenuOpen(false)}> login
+                            <Link to="/patient-signup" onClick={() => setMenuOpen(false)}>
+                                {" "}
+                                Sign in{" "}
+                            </Link>
+                            <Link to="/patient-login" onClick={() => setMenuOpen(false)}>
+                                {" "}
+                                Log in
                             </Link>
                         </div>
                     </article>
@@ -98,8 +111,11 @@ export default function LandingPage() {
                     <article className="nav-card nav-card-clinic">
                         <h3>Clinic</h3>
                         <div className="nav-links">
-                            <Link to="/clinic-signup" onClick={() => setMenuOpen(false)}> signin </Link>
-                            <Link to="/clinic-login" onClick={() => setMenuOpen(false)}> login
+                            <Link to="/clinic-signup" onClick={() => setMenuOpen(false)}>
+                                Sign in
+                            </Link>
+                            <Link to="/clinic-login" onClick={() => setMenuOpen(false)}>
+                                Log in
                             </Link>
                         </div>
                     </article>
@@ -109,13 +125,22 @@ export default function LandingPage() {
             <section className="hero-section" id="hero">
                 <h1 className="hero-title">Modern Immunization &amp; Clinic Management Platform</h1>
                 <p className="hero-description">
-                    Securely manage patient records, appointments, and vaccination history all in one place.
+                    Securely manage patient records, appointments, and vaccination history all in
+                    one place.
                 </p>
                 <div className="hero-actions">
-                    <button type="button" className="hero-action-btn" onClick={() => scrollToSection('patients')}>
+                    <button
+                        type="button"
+                        className="hero-action-btn"
+                        onClick={() => scrollToSection("patients")}
+                    >
                         Patient
                     </button>
-                    <button type="button" className="hero-action-btn" onClick={() => scrollToSection('clinics')}>
+                    <button
+                        type="button"
+                        className="hero-action-btn"
+                        onClick={() => scrollToSection("clinics")}
+                    >
                         Clinic
                     </button>
                 </div>
@@ -134,7 +159,7 @@ export default function LandingPage() {
                             Designed for Patients
                         </ScrollReveal>
                     </div>
-                    <ul className={`feature-list from-right ${patientVisible ? 'in-view' : ''}`}>
+                    <ul className={`feature-list from-right ${patientVisible ? "in-view" : ""}`}>
                         <li className="feature-item">
                             <span className="feature-item-icon">📄</span>
                             <div>
@@ -173,7 +198,7 @@ export default function LandingPage() {
                             Built for Clinics
                         </ScrollReveal>
                     </div>
-                    <ul className={`feature-list from-left ${clinicVisible ? 'in-view' : ''}`}>
+                    <ul className={`feature-list from-left ${clinicVisible ? "in-view" : ""}`}>
                         <li className="feature-item">
                             <span className="feature-item-icon">👥</span>
                             <div>
