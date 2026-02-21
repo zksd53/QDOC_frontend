@@ -1,10 +1,41 @@
 import React from 'react';
-import { calculateAge } from './patientUtils';
-import clinicPatients from '../../shared/clinicPatients';
+import { buildVaccineInsights, calculateAge, formatDate } from './patientUtils';
 
 function ProfileTab({ patientProfile, onProfileUpdate }) {
     const [conditionInput, setConditionInput] = React.useState('');
-    const aaravDetails = clinicPatients.find((item) => item.name.toLowerCase() === 'aarav sharma');
+    const insights = buildVaccineInsights(patientProfile, 14);
+
+    const prioritizedItem =
+        insights.timeline.find((item) => item.status === 'overdue') ||
+        insights.timeline.find((item) => item.status === 'due_soon') ||
+        insights.timeline.find((item) => item.status === 'completed') ||
+        null;
+
+    const profileName = patientProfile?.name?.trim() || 'Patient';
+
+    const riskFactors = [];
+    if (Array.isArray(patientProfile?.conditions) && patientProfile.conditions.length > 0) {
+        riskFactors.push('Chronic conditions');
+    }
+    if (patientProfile?.pregnancyStatus) riskFactors.push('Pregnancy');
+    if (patientProfile?.immunocompromisedStatus) riskFactors.push('Immunocompromised');
+    const riskLabel = riskFactors.length ? riskFactors.join(', ') : 'None';
+
+    const statusLabel = prioritizedItem?.status === 'overdue'
+        ? 'Overdue'
+        : prioritizedItem?.status === 'due_soon'
+            ? 'Due This Week'
+            : prioritizedItem?.status === 'completed'
+                ? 'Completed'
+                : 'No Schedule';
+
+    const statusClass = prioritizedItem?.status === 'overdue'
+        ? 'status-overdue'
+        : prioritizedItem?.status === 'due_soon'
+            ? 'status-due_soon'
+            : prioritizedItem?.status === 'completed'
+                ? 'status-completed'
+                : 'status-not_eligible';
 
     const addCondition = () => {
         const value = conditionInput.trim();
@@ -68,29 +99,29 @@ function ProfileTab({ patientProfile, onProfileUpdate }) {
 
     return (
         <div className="dash-stack">
-            {aaravDetails ? (
+            {prioritizedItem ? (
                 <section className="dash-panel">
                     <h2 className="dash-heading">Clinic Shared Record</h2>
                     <div className="timeline-list">
                         <article className="timeline-item">
                             <div>
-                                <p className="timeline-title">{aaravDetails.name}</p>
-                                <p className="timeline-reason">{aaravDetails.dueVaccine}</p>
+                                <p className="timeline-title">{profileName}</p>
+                                <p className="timeline-reason">{prioritizedItem.vaccineName}</p>
                             </div>
                             <div className="timeline-right">
-                                <span className={`status-pill status-${aaravDetails.currentStatus === 'Overdue' ? 'overdue' : aaravDetails.currentStatus === 'Completed' ? 'completed' : 'due_soon'}`}>
-                                    {aaravDetails.currentStatus}
+                                <span className={`status-pill ${statusClass}`}>
+                                    {statusLabel}
                                 </span>
-                                <p className="timeline-date">Last dose: {aaravDetails.lastDoseDate}</p>
+                                <p className="timeline-date">Last dose: {formatDate(prioritizedItem.lastDate)}</p>
                             </div>
                         </article>
                         <article className="timeline-item">
                             <div>
                                 <p className="timeline-title">Eligibility Explanation</p>
-                                <p className="timeline-reason">{aaravDetails.eligibility}</p>
+                                <p className="timeline-reason">{prioritizedItem.reason}</p>
                             </div>
                             <div className="timeline-right">
-                                <p className="timeline-date">Risk: {aaravDetails.riskFactors}</p>
+                                <p className="timeline-date">Risk: {riskLabel}</p>
                             </div>
                         </article>
                     </div>

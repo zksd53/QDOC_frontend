@@ -69,7 +69,12 @@ function PatientDashboard() {
         }
     }, []);
 
-    const patientName = patientProfile?.name || authUser?.name || 'Patient Portal';
+    const patientName =
+        patientProfile?.name ||
+        authUser?.name ||
+        [authUser?.first_name, authUser?.last_name].filter(Boolean).join(' ') ||
+        authUser?.email ||
+        'Patient';
 
     const handleHelp = () => {
         setActiveTab('reminders');
@@ -85,7 +90,7 @@ function PatientDashboard() {
     return (
         <div className="patient-page">
             <div className="patient-topbar">
-                <span className="patient-topbar-name">{patientName}</span>
+                <span className="patient-topbar-name">Patient Dashboard</span>
                 <div className="patient-topbar-actions">
                     <button type="button" className="patient-topbar-btn" onClick={handleHelp}>Help</button>
                     <button type="button" className="patient-topbar-btn patient-topbar-btn-logout" onClick={handleLogout}>Logout</button>

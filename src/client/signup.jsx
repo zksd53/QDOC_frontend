@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { signupUser } from "../services/auth";
+import { loginUser, signupUser } from "../services/auth";
 import "../user/PatientLogin.css";
 
 export default function ClinicSignup() {
@@ -22,8 +22,19 @@ export default function ClinicSignup() {
 
         try {
             const result = await signupUser({ name, email, password, role: "clinic" });
-            const user = result?.user || result?.data?.user || { name, email, role: "clinic" };
-            const token = result?.token || result?.accessToken || result?.jwt || result?.data?.token || "";
+            let user = result?.user || result?.data?.user || { name, email, role: "clinic" };
+            let token = result?.token || result?.accessToken || result?.jwt || result?.data?.token || "";
+
+            if (!token) {
+                const loginResult = await loginUser({ email, password, role: "clinic" });
+                token =
+                    loginResult?.token ||
+                    loginResult?.accessToken ||
+                    loginResult?.jwt ||
+                    loginResult?.data?.token ||
+                    "";
+                user = loginResult?.user || loginResult?.data?.user || user;
+            }
 
             sessionStorage.setItem("auth_user", JSON.stringify(user));
             if (token) sessionStorage.setItem("auth_token", token);

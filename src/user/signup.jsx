@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { signupUser } from "../services/auth";
+import { loginUser, signupUser } from "../services/auth";
 import "./PatientLogin.css";
 
 export default function PatientSignup() {
@@ -22,13 +22,25 @@ export default function PatientSignup() {
 
         try {
             const result = await signupUser({ name, email, password });
-            const user = result?.user || result?.data?.user || { name, email };
-            const token =
+            let user = result?.user || result?.data?.user || { name, email };
+            let token =
                 result?.token || result?.accessToken || result?.jwt || result?.data?.token || "";
+
+            if (!token) {
+                const loginResult = await loginUser({ email, password });
+                token =
+                    loginResult?.token ||
+                    loginResult?.accessToken ||
+                    loginResult?.jwt ||
+                    loginResult?.data?.token ||
+                    "";
+                user = loginResult?.user || loginResult?.data?.user || user;
+            }
 
             sessionStorage.setItem("auth_user", JSON.stringify(user));
             if (token) sessionStorage.setItem("auth_token", token);
             sessionStorage.setItem("allow_patient_first_time", "true");
+            sessionStorage.setItem("patient_signup_name", name.trim());
 
             navigate("/patient-first-time", { replace: true });
         } catch (err) {

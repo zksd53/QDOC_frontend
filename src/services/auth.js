@@ -52,3 +52,39 @@ export const loginUser = async ({ email, password, role }) => {
 
     return parseBody(response);
 };
+
+export const updateUserProfile = async ({
+    token,
+    first_name,
+    last_name,
+    gender,
+    address,
+    phone,
+    birth,
+    conditions,
+    pregnant
+}) => {
+    const response = await fetch(`${API_BASE_URL}/api/auth/updateUserProfile`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { Authorization: `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify({
+            first_name,
+            last_name,
+            gender,
+            address,
+            phone,
+            birth,
+            conditions,
+            pregnant
+        })
+    });
+
+    if (!response.ok) {
+        throw new Error(await parseError(response));
+    }
+
+    return parseBody(response);
+};

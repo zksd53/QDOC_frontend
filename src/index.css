@@ -43,6 +43,40 @@ body {
   font-size: 24px;
 }
 
+.form-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.form-card-head h1 {
+  margin: 0;
+}
+
+.csv-upload-btn {
+  white-space: nowrap;
+}
+
+.visually-hidden-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.csv-error {
+  margin: 0 0 12px;
+  color: #b91c1c;
+  font-size: 14px;
+  font-weight: 600;
+}
+
 .form-grid {
   display: grid;
   grid-template-columns: 170px 1fr;
@@ -173,6 +207,15 @@ body {
   .form-grid {
     grid-template-columns: 1fr;
     gap: 8px;
+  }
+
+  .form-card-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .csv-upload-btn {
+    width: 100%;
   }
 
   .form-grid label {
