@@ -8,7 +8,7 @@ function HomeTab({ patientProfile, reminderSettings }) {
 
     return (
         <div className="dash-stack">
-            <section className="dash-grid-5">
+            <section className="dash-grid-4">
                 <article className="dash-metric-card">
                     <p className="dash-metric-label">Total Vaccines Completed</p>
                     <p className="dash-metric-value">{insights.summary.completedCount}</p>

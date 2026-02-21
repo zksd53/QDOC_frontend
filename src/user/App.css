@@ -176,20 +176,22 @@
 
 .dash-stack {
     display: grid;
-    gap: 16px;
+    gap: 18px;
 }
 
 .dash-panel {
     background: #ffffff;
     border: 1px solid #e5e7eb;
     border-radius: 14px;
-    padding: 18px;
+    padding: 20px;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
 }
 
 .dash-heading {
-    margin: 0 0 8px;
-    font-size: 24px;
+    margin: 0 0 10px;
+    font-size: 22px;
     color: #111827;
+    letter-spacing: -0.01em;
 }
 
 .dash-subtext,
@@ -215,11 +217,18 @@
     gap: 12px;
 }
 
+.dash-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+}
+
 .dash-metric-card {
     background: #ffffff;
     border: 1px solid #e5e7eb;
     border-radius: 12px;
-    padding: 14px;
+    padding: 14px 16px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.03);
 }
 
 .dash-metric-label {
@@ -229,17 +238,40 @@
 }
 
 .dash-metric-value {
-    margin: 8px 0 0;
-    font-size: 28px;
+    margin: 10px 0 0;
+    font-size: 30px;
     font-weight: 700;
     color: #111827;
 }
 
 .dash-metric-value-small {
-    margin: 8px 0 0;
+    margin: 10px 0 0;
     font-size: 16px;
     font-weight: 700;
     color: #111827;
+}
+
+.action-list {
+    display: grid;
+    gap: 10px;
+}
+
+.action-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.action-title {
+    margin: 0;
+    color: #0f172a;
+    font-size: 16px;
+    font-weight: 700;
 }
 
 .timeline-list {
@@ -268,6 +300,16 @@
     font-size: 18px;
 }
 
+.vaccine-check-row {
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 600;
+}
+
 .timeline-right {
     text-align: right;
     min-width: 190px;
@@ -279,6 +321,7 @@
     padding: 4px 10px;
     font-size: 12px;
     font-weight: 700;
+    white-space: nowrap;
 }
 
 .status-completed {
@@ -538,6 +581,10 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
+    .dash-grid-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .eligibility-grid {
         grid-template-columns: 1fr;
     }
@@ -560,7 +607,8 @@
     .profile-grid,
     .profile-grid-2,
     .toggle-row,
-    .dash-grid-5 {
+    .dash-grid-5,
+    .dash-grid-4 {
         grid-template-columns: 1fr;
     }
 

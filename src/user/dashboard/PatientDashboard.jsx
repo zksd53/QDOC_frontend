@@ -125,6 +125,7 @@ function PatientDashboard() {
                             <VaccinationTab
                                 patientProfile={patientProfile}
                                 reminderSettings={reminderSettings}
+                                onProfileUpdate={handleProfileUpdate}
                             />
                         )}
                         {activeTab === 'reminders' && (

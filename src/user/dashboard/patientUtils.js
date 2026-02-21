@@ -6,11 +6,7 @@ const VACCINE_CATALOG = [
     { key: 'mmrv', name: 'Measles, Mumps, Rubella, Varicella (MMRV)', intervalDays: 3650, minAge: 1 },
     { key: 'men-c-acyw', name: 'Meningococcal Conjugate Quadrivalent (Men-C-ACYW)', intervalDays: 3650, minAge: 1 },
     { key: 'tdap-ipv', name: 'Tdap-IPV', intervalDays: 3650, minAge: 4 },
-    { key: 'influenza', name: 'Influenza (Flu)', intervalDays: 365, minAge: 0 },
-    { key: 'hepatitis-b', name: 'Hepatitis B (HB)', intervalDays: 3650, minAge: 10 },
-    { key: 'hpv', name: 'Human Papillomavirus (HPV)', intervalDays: 3650, minAge: 9, maxAge: 45 },
-    { key: 'tdap-adult', name: 'Tetanus, Diphtheria, Pertussis (Tdap)', intervalDays: 3650, minAge: 12 },
-    { key: 'pneu-c-20', name: 'Pneumococcal Conjugate (Pneu-C-20)', intervalDays: 3650, minAge: 65 }
+    { key: 'influenza', name: 'Influenza (Flu)', intervalDays: 365, minAge: 0 }
 ];
 
 const DAY_MS = 24 * 60 * 60 * 1000;

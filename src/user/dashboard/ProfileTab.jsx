@@ -1,8 +1,10 @@
 import React from 'react';
 import { calculateAge } from './patientUtils';
+import clinicPatients from '../../shared/clinicPatients';
 
 function ProfileTab({ patientProfile, onProfileUpdate }) {
     const [conditionInput, setConditionInput] = React.useState('');
+    const aaravDetails = clinicPatients.find((item) => item.name.toLowerCase() === 'aarav sharma');
 
     const addCondition = () => {
         const value = conditionInput.trim();
@@ -66,6 +68,35 @@ function ProfileTab({ patientProfile, onProfileUpdate }) {
 
     return (
         <div className="dash-stack">
+            {aaravDetails ? (
+                <section className="dash-panel">
+                    <h2 className="dash-heading">Clinic Shared Record</h2>
+                    <div className="timeline-list">
+                        <article className="timeline-item">
+                            <div>
+                                <p className="timeline-title">{aaravDetails.name}</p>
+                                <p className="timeline-reason">{aaravDetails.dueVaccine}</p>
+                            </div>
+                            <div className="timeline-right">
+                                <span className={`status-pill status-${aaravDetails.currentStatus === 'Overdue' ? 'overdue' : aaravDetails.currentStatus === 'Completed' ? 'completed' : 'due_soon'}`}>
+                                    {aaravDetails.currentStatus}
+                                </span>
+                                <p className="timeline-date">Last dose: {aaravDetails.lastDoseDate}</p>
+                            </div>
+                        </article>
+                        <article className="timeline-item">
+                            <div>
+                                <p className="timeline-title">Eligibility Explanation</p>
+                                <p className="timeline-reason">{aaravDetails.eligibility}</p>
+                            </div>
+                            <div className="timeline-right">
+                                <p className="timeline-date">Risk: {aaravDetails.riskFactors}</p>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+            ) : null}
+
             <section className="dash-panel">
                 <h2 className="dash-heading">Profile Management</h2>
                 <div className="profile-grid profile-grid-2">
